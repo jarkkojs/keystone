@@ -41,7 +41,7 @@ int epm_init(struct epm* epm, unsigned int min_pages)
 
   /* prevent kernel from complaining about an invalid argument */
   if (order < MAX_ORDER)
-    epm_vaddr = (vaddr_t) __get_free_pages(GFP_HIGHUSER, order);
+    epm_vaddr = (vaddr_t) __get_free_pages(GFP_USER, order);
 
 #ifdef CONFIG_CMA
   /* If buddy allocator fails, we fall back to the CMA */
@@ -98,7 +98,7 @@ int utm_init(struct utm* utm, size_t untrusted_size)
 
   /* Currently, UTM does not utilize CMA.
    * It is always allocated from the buddy allocator */
-  utm->ptr = (void*) __get_free_pages(GFP_HIGHUSER, order);
+  utm->ptr = (void*) __get_free_pages(GFP_USER, order);
   if (!utm->ptr) {
     keystone_err("failed to allocate UTM (size = %i bytes)\n",(1<<order));
     return -ENOMEM;
